@@ -27,17 +27,23 @@ void stackPush(STACKITEM **stackPtr, int data)
 	}
 }
 
-void stackPop(STACKITEM **stackPtr)
+STACKITEM* stackPop(STACKITEM **stackPtr)
 {
+	STACKITEM *temp=NULL;
 	if(*stackPtr ==NULL)
 	{
 		printf("Stack UNDERFLOW\n");
 	}
 	else
 	{
-
+		temp = *stackPtr;
+		*stackPtr=(*stackPtr)->next;
+		if(*stackPtr ==NULL)
+		{
+			printf("Last element on stack has been popped\n");
+		}
+		free(temp);
 	}
-		
 }
 
 void printStack(STACKITEM *stackPtr)
@@ -49,7 +55,6 @@ void printStack(STACKITEM *stackPtr)
 			printf("data = %d\n", stackPtr->data);
 			stackPtr = stackPtr->next;
 		}
-
 	}
 	else
 	{
@@ -64,13 +69,17 @@ int main(void)
 {
 	STACKITEM *stackPtr=NULL;
 	
-	stackPush(&stackPtr,2);
-	stackPush(&stackPtr,4);
-	stackPush(&stackPtr,6);
-	stackPush(&stackPtr,8);
-	stackPush(&stackPtr,10);
-	stackPush(&stackPtr,12);
+//	stackPush(&stackPtr,2);
+//	stackPush(&stackPtr,4);
+//	stackPush(&stackPtr,6);
+//	stackPush(&stackPtr,8);
+//	stackPush(&stackPtr,10);
+//	stackPush(&stackPtr,12);
 	stackPush(&stackPtr,14);
 	printStack(stackPtr);
+
+	stackPop(&stackPtr);
+	printStack(stackPtr);
+
 	return(0);
 }
