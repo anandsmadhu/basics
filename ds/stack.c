@@ -29,6 +29,15 @@ void stackPush(STACKITEM **stackPtr, int data)
 
 void stackPop(STACKITEM **stackPtr)
 {
+	if(*stackPtr ==NULL)
+	{
+		printf("Stack UNDERFLOW\n");
+	}
+	else
+	{
+
+	}
+		
 }
 
 void printStack(STACKITEM *stackPtr)
