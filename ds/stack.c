@@ -28,16 +28,13 @@ void stackPush(STACKITEM **stackPtr, int data)
 	}
 }
 
-<<<<<<< HEAD
 STACKITEM* stackPop(STACKITEM **stackPtr)
 {
 	STACKITEM *temp=NULL;
-=======
 int stackPop(STACKITEM **stackPtr)
 {
 	STACKITEM *temp=NULL;
 	int stackdata;
->>>>>>> Added pop operation
 	if(*stackPtr ==NULL)
 	{
 		printf("Stack UNDERFLOW\n");
@@ -51,13 +48,10 @@ int stackPop(STACKITEM **stackPtr)
 		{
 			printf("Last element on stack has been popped\n");
 		}
-<<<<<<< HEAD
 		free(temp);
-=======
 		stackdata = temp->data;
 		free(temp);
 		return(stackdata);
->>>>>>> Added pop operation
 	}
 }
 
@@ -92,11 +86,9 @@ int main(void)
 	stackPush(&stackPtr,14);
 	printStack(stackPtr);
 
-<<<<<<< HEAD
 	stackPop(&stackPtr);
 	printStack(stackPtr);
 
-=======
 	printf("Data from tops of stack = %d\n" ,stackPop(&stackPtr));
 	printf("Data from tops of stack = %d\n" ,stackPop(&stackPtr));
 	printf("Data from tops of stack = %d\n" ,stackPop(&stackPtr));
@@ -108,6 +100,5 @@ int main(void)
 	printf("Data from tops of stack = %d\n" ,stackPop(&stackPtr));
 	printf("Data from tops of stack = %d\n" ,stackPop(&stackPtr));
 	
->>>>>>> Added pop operation
 	return(0);
 }
