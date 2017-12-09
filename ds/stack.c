@@ -28,9 +28,6 @@ void stackPush(STACKITEM **stackPtr, int data)
 	}
 }
 
-STACKITEM* stackPop(STACKITEM **stackPtr)
-{
-	STACKITEM *temp=NULL;
 int stackPop(STACKITEM **stackPtr)
 {
 	STACKITEM *temp=NULL;
@@ -42,13 +39,14 @@ int stackPop(STACKITEM **stackPtr)
 	}
 	else
 	{
+		printf("Stack not empty\n");
 		temp = *stackPtr;
 		*stackPtr=(*stackPtr)->next;
 		if(*stackPtr ==NULL)
 		{
 			printf("Last element on stack has been popped\n");
 		}
-		free(temp);
+		
 		stackdata = temp->data;
 		free(temp);
 		return(stackdata);
@@ -77,12 +75,12 @@ int main(void)
 {
 	STACKITEM *stackPtr=NULL;
 	
-//	stackPush(&stackPtr,2);
-//	stackPush(&stackPtr,4);
-//	stackPush(&stackPtr,6);
-//	stackPush(&stackPtr,8);
-//	stackPush(&stackPtr,10);
-//	stackPush(&stackPtr,12);
+	stackPush(&stackPtr,2);
+	stackPush(&stackPtr,4);
+	stackPush(&stackPtr,6);
+	stackPush(&stackPtr,8);
+	stackPush(&stackPtr,10);
+	stackPush(&stackPtr,12);
 	stackPush(&stackPtr,14);
 	printStack(stackPtr);
 
@@ -102,3 +100,5 @@ int main(void)
 	
 	return(0);
 }
+
+
