@@ -95,6 +95,12 @@ void postOrderTraversal(TREENODE *rootNode)
 		return;
 }
 
+int heightOfTree(TREENODE *rootNode)
+{
+
+
+}
+
 int main(void)
 {
 	TREENODE *root = NULL;
