@@ -18,6 +18,8 @@ typedef struct btreenode
 	struct btreenode *right;
 } TREENODE;
 
+static int nodeLevel=0;
+
 void insertNode(TREENODE **root, int nodeData)
 {
 	/*tree is empty*/
@@ -26,19 +28,18 @@ void insertNode(TREENODE **root, int nodeData)
 		*root = (TREENODE *) malloc(sizeof(TREENODE));
 		(*root)->left=NULL;
 		(*root)->data=nodeData;
-		(*root)->level=0;
+		(*root)->level=nodeLevel;
 		(*root)->right=NULL;
 	}
 	else /*tree is not empty. add as a leaf node*/
 	{
+		nodeLevel=(*root)->level + 1;
 		if(nodeData < (*root)->data)
 		{
-			printf("Inserting %d on left node\n", nodeData);
 			insertNode(&((*root)->left),nodeData);
 		}
 		else
 		{
-			printf("Inserting %d on right node\n", nodeData);
 			insertNode(&((*root)->right),nodeData);
 		}
 	}
@@ -55,7 +56,7 @@ void inOrderTraversal(TREENODE *rootNode)
 	if(rootNode!=NULL)
 	{
 		inOrderTraversal(rootNode->left);
-		printf("node data : %d\n", rootNode->data);
+		printf("node data : %d - Level = %d\n", rootNode->data,rootNode->level);
 		inOrderTraversal(rootNode->right);
 	}
 	else
@@ -70,7 +71,7 @@ void preOrderTraversal(TREENODE *rootNode)
 {
 	if(rootNode!=NULL)
 	{
-		printf("node data : %d\n", rootNode->data);
+		printf("node data : %d - Level = %d\n", rootNode->data,rootNode->level);
 		preOrderTraversal(rootNode->left);
 		preOrderTraversal(rootNode->right);
 	}
@@ -88,7 +89,7 @@ void postOrderTraversal(TREENODE *rootNode)
 	{
 		postOrderTraversal(rootNode->left);
 		postOrderTraversal(rootNode->right);
-		printf("node data : %d\n", rootNode->data);
+		printf("node data : %d - Level = %d\n", rootNode->data,rootNode->level);
 	}
 	else
 		return;
@@ -106,11 +107,11 @@ int main(void)
 	insertNode(&root, 2);
 	
 
-	printf("IN ORDER\n");
-	inOrderTraversal(root);
-	printf("PRE-ORDER\n");
+	printf("\nIN ORDER\n");
+	inOrderTraversal(root);	
+	printf("\n PRE-ORDER\n");
 	preOrderTraversal(root);
-    printf("POST-ORDER\n");
+    printf("\nPOST-ORDER\n");
 	postOrderTraversal(root);
 
 
