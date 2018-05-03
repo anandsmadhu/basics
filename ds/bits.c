@@ -1,31 +1,26 @@
 #include "stdio.h"
 
 
-void printbits(int n)
-{
-	while(n)
-	{
-		printf("%d ", (n & 0x1));
-		n = n>>1;
-	}
-}
-
 void recprintbits(int n)
 {
-	if(n <= 1)
-		printf("%d ", n%2);
-	else 
+	if (n != 1)
+		recprintbits(n >> 1);
+
+	printf("%d ", n & 0x1);
+}
+
+void printbits(int n)
+{
+	while (n != 0)
 	{
-		recprintbits(n/2);
-		printf("%d ", n%2);
+		printf("%d ", n & 0x1);
+		n = n >> 1;
 	}
-		
 }
 
 int main(void)
 {
 	int n = 37;
-	
 	recprintbits(n);
 	return(0);
 }
