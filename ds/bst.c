@@ -50,6 +50,11 @@ void searchBST(TREENODE *root, int value)
 		searchBST(root->right, value);
 }
 
+void isBST(TREENODE *root)
+
+
+
+
 
 int main(void)
 {

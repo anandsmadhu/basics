@@ -36,8 +36,7 @@ int recreverseNumber(int number)
     reversedNumber = (reversedNumber * 10) + (number % 10);
 }
 
-    void
-    recprintbits(int n)
+void recprintbits(int n)
 {
     if(n!=1)
         recprintbits(n>>1);
