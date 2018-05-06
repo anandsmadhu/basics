@@ -84,15 +84,6 @@ void printnum(int n)
 
 int main (void)
 {
-    
-    //printnum(10);
-    //printf("factorial of 5=%d\n" ,factorial(5));
-    //printbits(8);
-    //printf("\n");
-    //recprintbits(8);
-    //printf("rev bits = %d\n" ,revbits(8));
-    printf("TR factorial gives : %d\n", TRfactorial(5,1));
-    //revnumber(134);
-    printf("rec rev num = %d" ,recreverseNumber(134));
+    recprintbits(5);
     return (0);
 }
