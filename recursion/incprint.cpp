@@ -6,17 +6,18 @@ using namespace std;
 
 void increasingPrint(int n)
 {
-    if(n!=1)
-        increasingPrint(n-1);
-    
+    if (n==0)
+        return;
+    increasingPrint(n-1);
     cout << n << " ";
 }
 
 void decreasingPrint(int n)
 {
+    if(n==0)
+        return;
     cout << n <<" ";
-    if(n!=1)
-        decreasingPrint(n-1);
+    decreasingPrint(n-1);
 
 }
 
