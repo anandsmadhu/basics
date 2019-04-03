@@ -17,6 +17,8 @@ using namespace std;
 int main(void)
 {
 	hashfunction hashObj;
+	string name ="";
+
 	hashObj.addItem("Paul", "Locha");
 	hashObj.addItem("Kim", "Iced Mocha");
 	hashObj.addItem("Emma", "Strawberry Smoothie");
@@ -29,8 +31,19 @@ int main(void)
 	hashObj.addItem("Marie", "Skinny Latte");
 	hashObj.addItem("Susan", "Water");
 	hashObj.addItem("Joe", "Green Tea");
+	
 	//hashObj.printTable();
-	hashObj.printItemsInIndex(8);
+	//hashObj.printItemsInIndex(8);
+
+	while(name !="exit")
+	{
+		cout << "Search for : " ;
+		cin >> name;
+		if (name!="exit")
+		{
+			hashObj.findDrink(name);
+		}
+	}
 
 
 

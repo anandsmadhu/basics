@@ -18,7 +18,7 @@ using namespace std;
 class hashfunction
 {
 private:
-	static const int tableSize = 10;
+	static const int tableSize = 40;
 
 	struct item
 	{
@@ -36,6 +36,7 @@ public:
 	int NumberOfIntemsInIndex(int index);
 	void printTable();
 	void printItemsInIndex(int index);
+	void findDrink(string name);
 };
 
 

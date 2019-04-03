@@ -101,6 +101,32 @@ void hashfunction::printTable()
 	}
 }
 
+void hashfunction::findDrink(string name)
+{
+	int index = Hash(name);
+	bool foundName = false;
+	string drink;
+	item *ptr = HashTable[index];
+
+	while(ptr !=NULL)
+	{
+		if(ptr->name == name)
+		{
+			foundName = true;
+			drink = ptr->drink;
+		}
+		ptr = ptr->next;
+	}
+	if(foundName == true)
+	{
+		cout << "drink is : " << drink <<endl;
+	}
+	else
+	{
+		cout << "drink NOT found : " << endl;
+	}
+}
+
 int hashfunction::Hash (string key)
 {
 	int hash = 0;
@@ -108,7 +134,7 @@ int hashfunction::Hash (string key)
 
 	for(int i =0; i<key.length(); i++)
 	{
-		hash = hash+ (int)key[i];
+		hash = (hash+ (int)key[i]) *17;
 	}
 	index = hash % tableSize;
 	return(index);
