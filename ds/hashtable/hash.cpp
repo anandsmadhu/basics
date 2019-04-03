@@ -127,6 +127,20 @@ void hashfunction::findDrink(string name)
 	}
 }
 
+void hashfunction::removeItem(string name)
+{
+	int index = Hash(name);
+	item *ptr1, *ptr2, *delptr;
+	// Case 0: bucket is empty
+	// Case 1: bucket contains only one item
+	// Case 2: match is located in the first item in the bucket but there are more items in the bucket
+	// Case 3: match is located in the bucket 
+	// Case 3.1: no match
+	// Case 3: match is found
+
+
+}
+
 int hashfunction::Hash (string key)
 {
 	int hash = 0;
