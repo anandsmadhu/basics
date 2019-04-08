@@ -63,13 +63,13 @@ int main(void)
 
     int array[] = {37, 73, 11, 4, 33, 85, 5, 6};
     int arraysize = sizeof(array) / sizeof(int);
-    int ctr=0;
+    int idx=0;
 
     mergesort(array, 0, (arraysize-1));
     printf("SORTED ARRAY\n");
-    for(ctr=0;ctr<arraysize;ctr++)
+    for(idx=0;idx<arraysize;idx++)
     {
-        printf("%d, ", array[ctr]);
+        printf("%d, ", array[idx]);
     }
     
     return(0);
