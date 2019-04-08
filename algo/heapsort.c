@@ -27,11 +27,6 @@ void minHeapify(int array[], int arraySize, int i)
     int leftChild = (2*i) + 1;
     int rightChild = (2*i) + 2;
 
-    // printf("maxHeapify called with i = %d\n", i);
-
-    // printf("left child idx = %d, array[leftChild] = %d\n", leftChild, array[leftChild]);
-    // printf("right child idx = %d, array[rightChild] = %d\n", rightChild, array[rightChild]);
-
     if((leftChild < arraySize) && (array[leftChild]< array[smallest]))
         smallest = leftChild;
     if((rightChild < arraySize) && (array[rightChild]< array[smallest]))
@@ -40,7 +35,6 @@ void minHeapify(int array[], int arraySize, int i)
     if(smallest != i)
     {
         swap(&array[i], &array[smallest]);
-        //printArray(array, arraySize);
         minHeapify(array, arraySize, smallest);
     }    
 }
@@ -51,11 +45,6 @@ void maxHeapify(int array[], int arraySize, int i)
     int leftChild = (2*i) + 1;
     int rightChild = (2*i) + 2;
 
-    // printf("maxHeapify called with i = %d\n", i);
-
-    // printf("left child idx = %d, array[leftChild] = %d\n", leftChild, array[leftChild]);
-    // printf("right child idx = %d, array[rightChild] = %d\n", rightChild, array[rightChild]);
-
     if((leftChild < arraySize) && (array[leftChild]> array[largest]))
         largest = leftChild;
     if((rightChild < arraySize) && (array[rightChild]> array[largest]))
@@ -64,7 +53,6 @@ void maxHeapify(int array[], int arraySize, int i)
     if(largest != i)
     {
         swap(&array[i], &array[largest]);
-        //printArray(array, arraySize);
         maxHeapify(array, arraySize, largest);
     }
 }
