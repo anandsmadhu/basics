@@ -12,6 +12,5 @@ void printStars(int n)
 int main(void)
 {
     int n = 5;
-
     printStars(n);
 }
