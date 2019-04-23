@@ -31,14 +31,9 @@ void roll(int dice, vector <int> &choice)
             roll(dice-1, choice);
 
             // undo choice
-
             choice.pop_back();
-
-
-
         }
     }
-    
 }
 
 
@@ -48,13 +43,11 @@ void rolldice(int dice)
         return;
     vector <int> choice;
     roll(dice, choice);
-    
 }
 
 
 int main(void)
 {
     int dice = 2;
-
     rolldice(dice);
 }
