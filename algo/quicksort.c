@@ -8,6 +8,10 @@ void swap(int *i, int*j)
     *j=t;
 }
 
+/*
+This partition method is Lomuto's method. Easy but degrades to O(n.sq) when array is already sorted or when array has equal elements
+*/
+
 int partition(int *array, int low, int high)
 {
     int i = low -1;
@@ -25,7 +29,6 @@ int partition(int *array, int low, int high)
     swap(&array[i + 1], &array[high]);
     return(i+1);
 }
-
 
 void quicksort(int *array, int low, int high)
 {
