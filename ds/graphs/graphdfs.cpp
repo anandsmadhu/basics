@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cstdio>
 #include <list>
+#include <stack>
  
 using namespace std;
 
@@ -9,9 +10,10 @@ class Graph
 {
     int numVertices;
     list<int> *adjList;
+    stack<int> dfsStack;
     bool *visited;
 
-    public:
+public:
 
     Graph(int vertices);
     void addEdge(int src, int dest);
@@ -40,44 +42,22 @@ void printVisitedNodes(bool visited[], int n)
         cout<<"visited["<<v<<"] = "<<visited[v]<<" ";
     }
      cout<<endl; 
-
 }
-
+ 
 void Graph::DFS(int startVertex)
 {
-    
-    for(int idx = 0; idx<numVertices;idx++)
-        visited[idx] = false;
-    
     visited[startVertex] = true;
-    list<int> queue;
-
-    // visit the startVertex
     
-
-    // add the vertex just visited to the queue
-    queue.push_back(startVertex);
-    
-
+    list<int> l = adjList[startVertex];
     list<int>::iterator i;
 
-    while(!(queue.empty()))
+    cout<<startVertex<<", ";
+
+    for(i = l.begin(); i!=l.end(); ++i)
     {
-        int currentVertex = queue.front();
-        cout<<currentVertex<<", ";
-        queue.pop_front();
-
-        //printVisitedNodes(visited, numVertices);
-
-        for(i = adjList[currentVertex].begin(); i != adjList[currentVertex].end(); ++i)
+        if(visited[*i] == false)
         {
-            int adjVertex = *i;
-            if(visited[adjVertex] == false)
-            {
-                //printVisitedNodes(visited, numVertices);
-                visited[adjVertex] = true;
-                queue.push_back(adjVertex);
-            }
+            DFS(*i);
         }
     }
 }
@@ -94,7 +74,6 @@ void Graph::printadjList(void)
         }
         cout<<endl;
     }
-
 }
 
 int main(void)
@@ -108,15 +87,9 @@ int main(void)
     
     g.addEdge(2, 3);
     g.addEdge(3, 0);
-    g.addEdge(3, 3);
-
-    //g.printadjList();
-
     
-    g.BFS(0);   
+    g.DFS(0);   
 
     return(0); 
-
-
 }
 
