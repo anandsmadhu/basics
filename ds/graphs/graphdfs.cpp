@@ -31,8 +31,8 @@ Graph::Graph(int vertices)
 
 void Graph::addEdge(int s, int d)
 {
-    adjList[s].push_front(d);
-    adjList[d].push_front(s);
+    adjList[s].push_back(d);
+    adjList[d].push_back(s);
 }
 
 void printVisitedNodes(bool visited[], int n)
@@ -51,7 +51,7 @@ void Graph::DFS(int startVertex)
     list<int> l = adjList[startVertex];
     list<int>::iterator i;
 
-    cout<<startVertex<<", ";
+    
 
     for(i = l.begin(); i!=l.end(); ++i)
     {
@@ -60,6 +60,7 @@ void Graph::DFS(int startVertex)
             DFS(*i);
         }
     }
+    cout<<startVertex<<", ";
 }
 
 void Graph::printadjList(void)
