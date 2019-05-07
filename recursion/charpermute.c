@@ -8,12 +8,7 @@ void swap(char *x, char *y)
 
     
     char t;
-    if(* x == *y)
-    {
-        printf("no swap needed - returning\n");
-        return;
-    }
-    printf("SWAP : arr[left] = %c, arr[i]] = %c\n", *x, *y);
+
     t = *x;
     *x = *y;
     *y = t;
