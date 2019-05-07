@@ -22,12 +22,6 @@ void swap(char *x, char *y)
 void permute(char string[], int left, int right)
 {
     int i;
-    
-
-    printf("PERMUTE ENTERING ARGUMENTS stackframe_count = %d, string = %s, left = %d, right = %d\n", stackframe_count, string, left, right);
-    stackframe_count = stackframe_count + 1;
-    getchar();
-
     if(left == right)
     {
         printf("%s\n", string);
@@ -36,20 +30,12 @@ void permute(char string[], int left, int right)
     {
         for(i=left; i<=right; i++)
         {
-            printf("LOOP ARGUMENTS i = %d, left = %d, right = %d\n", i, left, right);
-            getchar();
             swap(&string[left], &string[i]);
-            printf("AFTER FIRST CALL TO SWAP string = %s\n", string);
-            getchar();
             permute(string, left+1, right);
             swap(&string[left], &string[i]);
-            printf("AFTER SECOND CALL TO SWAP string = %s\n", string);
-            getchar();
         }
     }
-    
 }
-
 
 int main(void)
 {
