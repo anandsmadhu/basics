@@ -9,4 +9,4 @@ graphmain.o: graphmain.cpp
 graph.o: graph.cpp
 	$(CC) $(CFLAGS) -c graph.cpp
 clean:
-	rm -f core *.o
+	rm -f core *.o *.exe
