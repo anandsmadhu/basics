@@ -5,37 +5,41 @@
 
 using namespace std;
 
+int tripletSum(vector<int> trip)
+{
+    int sum=0;
+    for(int idx = 0; idx<trip.size(); idx++)
+    {
+        sum = sum + trip[idx];
+    }
+    return(sum);
+}
 
 void tripletSum(int *a, int start, int length, int sum)
 {
     static vector<int> triplet;
 
-    if (triplet.size() == 3)
+    if (start == length)
     {
-        if (sum == 0)
+        if ((triplet.size() == 3) && (tripletSum(triplet) <= sum))
         {
-            cout << "{";
-            for (int v = 0; v < triplet.size(); v++)
-            {
-                cout<<triplet[v]<<" ";
-            }
-            cout << "}"<<endl;
-            /*print vector*/
-            return;
+           cout<<"{";
+           for(int idx = 0; idx<3; idx++)
+           {
+               cout<<triplet[idx];
+
+           }
+           cout << "}"<<endl;
         }
     }
     else
     {
-        for (int idx = 0; idx < length;idx++)
-        {
-            triplet.push_back(a[idx]);
-            tripletSum(a, idx + 1, length, sum - a[idx]);
-            triplet.pop_back();
-        }
+        tripletSum(a, start + 1, length, sum);
+        triplet.push_back(a[start]);
+        tripletSum(a, start + 1, length, sum);
+        triplet.pop_back();
     }
 }
-
-
 
 int main(void)
 {
@@ -45,9 +49,5 @@ int main(void)
     int sum = 10;
 
     tripletSum(array, 0, arrayLength,sum);
-
     return(0);
-
-
-
 }
