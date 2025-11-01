@@ -1,0 +1,5 @@
+Install ARM GCC compilers
+    sudo apt install gcc make gcc-aarch64-linux-gnu binutils-aarch64-linux-gnu
+
+Compile for ARM64
+    aarch64-linux-gnu-gcc helloworld.c -o helloworld-aarch64 -static
