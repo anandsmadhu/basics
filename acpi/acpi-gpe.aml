@@ -1,0 +1,194 @@
+// - Temperature rises → EC sets GPE 0x1C bit
+// - SCI interrupt → ACPI checks fixed events → None found
+// - ACPI searches namespace → Finds \_GPE._L1C
+// - Executes _L1C → Calls _Q1C
+// - _Q1C notifies thermal zone → OS thermal handler responds
+// - OS may enable fans (_ON method) or throttle CPUs
+
+
+// [OS Thermal Driver]  ---calls--->  [AML _TMP method]  ---reads--->  [EC Hardware]
+//         |
+//         | (decides temperature too high)
+//         |
+//         v
+// [OS calls AML _ON]  ---executes--->  [Turn on fan in EC]
+
+
+DefinitionBlock ("thermal.aml", "DSDT", 2, "VENDOR", "THERMAL", 0x00000001)
+{
+    // Thermal Zone Object
+    Scope (\_TZ)
+    {
+        // Define Thermal Zone TZ0
+        ThermalZone (TZ0)
+        {
+            // Current Temperature Method (in tenths of Kelvin)
+            // Returns current temperature reading from hardware
+            Method (_TMP, 0, NotSerialized)
+            {
+                // Read temperature from embedded controller or hardware register
+                // Example: Convert from Celsius to tenths of Kelvin
+                // (Celsius + 273.15) * 10
+                // Assuming EC reads temperature at offset 0x78
+                Local0 = \_SB.PCI0.LPCB.EC0.RTMP  // Read temp from EC
+                Local1 = (Local0 + 2732)           // Convert to tenths of Kelvin
+                Return (Local1)
+            }
+
+            // Passive Cooling Temperature (95°C = 3682 in tenths of K)
+            Method (_PSV, 0, NotSerialized)
+            {
+                Return (3682)  // 95°C threshold
+            }
+
+            // Critical Temperature (100°C = 3732 in tenths of K)
+            Method (_CRT, 0, NotSerialized)
+            {
+                Return (3732)  // 100°C - system must shutdown
+            }
+
+            // Hot Temperature (98°C = 3712 in tenths of K)
+            Method (_HOT, 0, NotSerialized)
+            {
+                Return (3712)  // 98°C - urgent cooling needed
+            }
+
+            // Active Cooling Temperature Thresholds
+            // _AC0 is the highest/most aggressive cooling level
+            Method (_AC0, 0, NotSerialized)
+            {
+                Return (3632)  // 90°C - turn on fan at full speed
+            }
+
+            Method (_AC1, 0, NotSerialized)
+            {
+                Return (3532)  // 80°C - turn on fan at medium speed
+            }
+
+            Method (_AC2, 0, NotSerialized)
+            {
+                Return (3432)  // 70°C - turn on fan at low speed
+            }
+
+            // Active Cooling Device Lists
+            // Lists devices to activate for each active cooling level
+            Name (_AL0, Package () { \_SB.PCI0.LPCB.EC0.FAN0 })
+            Name (_AL1, Package () { \_SB.PCI0.LPCB.EC0.FAN0 })
+            Name (_AL2, Package () { \_SB.PCI0.LPCB.EC0.FAN0 })
+
+            // Passive Cooling Device List
+            Name (_PSL, Package ()
+            {
+                \_SB.PCI0.CPU0,  // CPU cores to throttle
+                \_SB.PCI0.CPU1,
+                \_SB.PCI0.CPU2,
+                \_SB.PCI0.CPU3
+            })
+
+            // Thermal Sampling Period (in tenths of seconds)
+            Method (_TSP, 0, NotSerialized)
+            {
+                Return (50)  // Poll every 5 seconds
+            }
+
+            // Thermal Coefficients for passive cooling
+            Method (_TC1, 0, NotSerialized)
+            {
+                Return (2)  // Passive cooling constant 1
+            }
+
+            Method (_TC2, 0, NotSerialized)
+            {
+                Return (5)  // Passive cooling constant 2
+            }
+        }
+    }
+
+    // Embedded Controller Scope (handles hardware interaction)
+    Scope (\_SB.PCI0.LPCB.EC0)
+    {
+        // Temperature reading field in EC memory
+        OperationRegion (ERAM, EmbeddedControl, 0x00, 0xFF)
+        Field (ERAM, ByteAcc, Lock, Preserve)
+        {
+            Offset (0x78),
+            RTMP, 8,     // Current temperature in Celsius
+            Offset (0x7A),
+            TTRG, 8,     // Temperature trigger threshold
+        }
+
+        // Fan device
+        Device (FAN0)
+        {
+            Name (_HID, EisaId ("PNP0C0B"))  // Fan device ID
+            Name (_UID, 0)
+
+            // Fan status
+            Method (_STA, 0, NotSerialized)
+            {
+                Return (0x0F)  // Present, enabled, functional
+            }
+
+            // Fan on/off control
+            Method (_ON, 0, NotSerialized)
+            {
+                // Set EC bit to turn on fan
+                // Implementation specific to hardware
+                Store (1, \_SB.PCI0.LPCB.EC0.FCTL)
+            }
+
+            Method (_OFF, 0, NotSerialized)
+            {
+                // Set EC bit to turn off fan
+                Store (0, \_SB.PCI0.LPCB.EC0.FCTL)
+            }
+        }
+
+        // Fan control bit
+        Field (ERAM, ByteAcc, Lock, Preserve)
+        {
+            Offset (0x7C),
+            FCTL, 1,     // Fan control (0=off, 1=on)
+        }
+
+        // GPE Query method for thermal events
+        // This corresponds to GPE 0x1C (example GPE number)
+        Method (_Q1C, 0, NotSerialized)
+        {
+            // This method is called when thermal GPE fires
+            // Read current temperature and check if it crossed threshold
+            Local0 = RTMP
+            Local1 = TTRG
+
+            If (Local0 >= Local1)
+            {
+                // Temperature threshold crossed
+                // Notify the thermal zone with thermal event (0x80)
+                Notify (\_TZ.TZ0, 0x80)
+            }
+        }
+    }
+
+    // GPE Block - Level-triggered handler for GPE 0x1C
+   
+    Scope (\_GPE)
+    {
+        // Level-triggered GPE handler for thermal events
+        // _L1C corresponds to GPE number 0x1C (28 decimal)
+        Method (_L1C, 0, NotSerialized)
+        {
+            // Clear the GPE status bit by calling EC query method
+            // The EC will determine which thermal event occurred
+            \_SB.PCI0.LPCB.EC0._Q1C ()
+        }
+    }
+
+    // Processor objects for passive cooling
+    Scope (\_SB.PCI0)
+    {
+        Processor (CPU0, 0x00, 0x00000410, 0x06) {}
+        Processor (CPU1, 0x01, 0x00000410, 0x06) {}
+        Processor (CPU2, 0x02, 0x00000410, 0x06) {}
+        Processor (CPU3, 0x03, 0x00000410, 0x06) {}
+    }
+}
